@@ -111,12 +111,12 @@ Reference: https://portswigger.net/web-security/csrf/lab-token-tied-to-non-sessi
 <!-- omit in toc -->
 This lab is actually pretty fun. There is a CSRF token protecting the change email functionality, but it is tied to non-session cookie (``csrfKey``). Of course the PoC from the previous lab cannot be used, there is a pretty cool way to inject ``csrfKey`` into the victim's browser. The search functionality stores in a cookie the last searched term, by searching a specific string like the following it is possible to set a valid cookie into the browser:
 ```
-/?search=test%0d%0aSet-Cookie:%20csrfKey=your-key
+/?search=test%0d%0aSet-Cookie:%20csrfKey=YOUR-KEY%3b%20SameSite=None
 ```
 
 Now that we find a way to inject ``csrfKey`` into the victim's browser the PoC from the previous lab can be used by changing the auto-submit part to: 
 ```html
-<img src="$cookie-injection-url" onerror="document.forms[0].submit()">
+<img src="https://YOUR-LAB-ID.web-security-academy.net/?search=test%0d%0aSet-Cookie:%20csrfKey=YOUR-KEY%3b%20SameSite=None" onerror="document.forms[0].submit()">
 ```
 
 <!-- omit in toc -->
